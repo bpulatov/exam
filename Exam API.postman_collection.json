@@ -1,0 +1,288 @@
+{
+	"info": {
+		"_postman_id": "a4f7a51f-7fe6-4352-bd7a-4d22ed81ebeb",
+		"name": "Exam API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24990034"
+	},
+	"item": [
+		{
+			"name": "Create profile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"User number should not exist in system\", function() {",
+							"    pm.expect(pm.response.json().exists).to.be.false;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODAxNjUwNjMsImlzcyI6InVzZXIiLCJwaWQiOjU5MDcsInJvbGUiOiJjdXN0b21lciIsInN1YiI6Ijg4NzFiY2VlLTMyYzMtNDlkZC1iZjU4LTY4OWY1NmM5NWNiYSJ9.qjjpjHBiOcjEbNRORGM88dTdsD-9OtJKyd4Fuu3gYaU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"phone\": +998001111111\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.spec.uzd.udevs.io/v1/customer/exists?phone=%2B998001111111",
+					"protocol": "https",
+					"host": [
+						"api",
+						"spec",
+						"uzd",
+						"udevs",
+						"io"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"exists"
+					],
+					"query": [
+						{
+							"key": "phone",
+							"value": "%2B998001111111"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send OTP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Auth reqres}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"phone\"=+998009988898}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.spec.uzd.udevs.io/v1/customer/send-code?phone=%2B998009988898",
+					"protocol": "https",
+					"host": [
+						"api",
+						"spec",
+						"uzd",
+						"udevs",
+						"io"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"send-code"
+					],
+					"query": [
+						{
+							"key": "phone",
+							"value": "%2B998009988898"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enter OTP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"string_you_want_to_search\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Auth reqres}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{code: \"700500\", \r\nphone: \"+98001111113\", \r\nplatform_name: \"Windows x64 | Chrome 119.0\"}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{uzdapi}}/v1/customer/check-otp",
+					"host": [
+						"{{uzdapi}}"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"check-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Status code name has string\", function () {\r",
+							"    pm.response.to.have.status(\"Created\");\r",
+							"});\r",
+							"pm.environment.set(\"name\", \"nbn\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{apple_id: \"\", \r\nfacebook_id: \"\",\r\nfcm_token: \"\", \r\ngoogle_id: \"\", \r\nname: \"nbn\", \r\nphone: \"98001111113\",…}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{uzdapi}}/v1/customer/register",
+					"host": [
+						"{{uzdapi}}"
+					],
+					"path": [
+						"v1",
+						"customer",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Auth reqres}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "favourite_actors: \"\"\r\nfavourite_countries: \"\"\r\nfavourite_genres: \"64f8396628d5a62a63818372,64f8396628d5a62a63818372,64f8396628d5a62a63818372,64f8396628d5a62a63818372,64f8396628d5a62a63818372\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{uzdapi}}/v1/profile/6699164c-2cb8-4742-b7c1-928d4327432a/add-favourites",
+					"host": [
+						"{{uzdapi}}"
+					],
+					"path": [
+						"v1",
+						"profile",
+						"6699164c-2cb8-4742-b7c1-928d4327432a",
+						"add-favourites"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
